@@ -33,6 +33,7 @@ namespace pdal_sys {
         int id(const PointView &view);
         const pdal::PointLayout& layout(const PointView& view);
         pdal::PointLayout& layout_mut(PointView& view);
+        void register_dims(PointView& view, rust::Vec<pdal::Dimension::Id> dims);
         rust::String proj4(const PointView& view);
         rust::String wkt(const PointView& view);
         std::int8_t pointField_i8(const PointView&, core::DimTypeId, pdal::PointId);

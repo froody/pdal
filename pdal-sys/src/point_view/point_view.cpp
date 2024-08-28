@@ -67,6 +67,12 @@ namespace pdal_sys {
             return *view.layout();
         }
 
+        void register_dims(PointView& view, rust::Vec<pdal::Dimension::Id> dims) {
+            for (auto dim : dims) {
+                view.layout()->registerDim(dim);
+            }
+        }
+
         size_t pointSizeForDims(const PointView& view, const rust::Vec<core::DimTypeId>& dims) {
             size_t retval = 0;
             for (auto dim : dims) {

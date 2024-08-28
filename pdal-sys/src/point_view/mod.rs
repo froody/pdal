@@ -48,6 +48,7 @@ mod ffi {
         fn wkt(pv: &PointView) -> Result<String>;
         #[namespace = "pdal_sys::core"]
         type DimTypeId = crate::core::DimTypeId;
+        fn register_dims(pv: Pin<&mut PointView>, dims: Vec<DimTypeId>) -> Result<()>;
         fn pointField_i8(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<i8>;
         fn pointField_u8(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<u8>;
         fn pointField_i16(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<i16>;
