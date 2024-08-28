@@ -101,5 +101,14 @@ namespace pdal_sys {
             return pv.getFieldAs<double>(dim, id);
         }
     }
+
+    namespace buffer_reader {
+        std::unique_ptr<BufferReader> make() {
+            return std::make_unique<BufferReader>();
+        }
+        void addView(BufferReader &reader, pdal::PointViewPtr view) {
+            reader.addView(view);
+        }
+    }
 }
 

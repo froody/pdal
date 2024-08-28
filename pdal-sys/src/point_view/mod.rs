@@ -21,6 +21,7 @@
 #[cxx::bridge(namespace = "pdal_sys")]
 mod ffi {
 
+
     #[namespace = "pdal_sys::point_view_set"]
     unsafe extern "C++" {
         include!("pdal-sys/src/point_view/point_view.hpp");
@@ -56,6 +57,13 @@ mod ffi {
         fn pointField_u64(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<u64>;
         fn pointField_f32(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<f32>;
         fn pointField_f64(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<f64>;
+    }
+
+    #[namespace = "pdal_sys::buffer_reader"]
+    unsafe extern "C++" {
+        include!("pdal-sys/src/point_view/point_view.hpp");
+        type BufferReader;
+        fn addView(self :Pin<&mut BufferReader>, pv: &SharedPtr<PointView>);
     }
 
     // This triggers the generation of the C++ template backing this concrete type.

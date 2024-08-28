@@ -28,6 +28,7 @@ static MODULES: &[&str] = &["core", "config", "pipeline_manager", "layout", "poi
 fn main() -> Result<(), Box<dyn Error>> {
     // std::env::set_var("RUST_LOG", "bindgen=info");
     // let _ = env_logger::builder().is_test(true).try_init()?;
+    /*
     let mut pdal_pkg_config = pkg_config::Config::new().probe("pdal")?;
 
     // For some reason pkg-config reports a path like `/foo/bar/include/pdal`, but
@@ -44,6 +45,16 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     CFG.exported_header_dirs
         .extend(pdal_pkg_config.include_paths.iter().map(|p| p.as_path()));
+    */
+
+    let include_paths = vec![
+        PathBuf::from("/Users/tbirch/src/polez/innerloop/third-party/pdal/include"),
+        PathBuf::from("/Users/tbirch/src/polez/innerloop/third-party/pdal"),
+    ];
+
+
+    CFG.exported_header_dirs
+        .extend(include_paths.iter().map(|p| p.as_path()));
 
     let module_files = MODULES
         .iter()
@@ -53,7 +64,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     let mut builder = cxx_build::bridges(module_files);
     builder
         .flag_if_supported("-std=c++14")
-        .cargo_warnings(false);
+        .warnings(false);
 
     for m in MODULES {
         builder.file(format!("src/{m}/{m}.cpp"));

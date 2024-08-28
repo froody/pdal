@@ -23,6 +23,7 @@ mod ffi {
     #[namespace = "pdal::Config"]
     #[repr(u32)]
     enum Feature {
+        LASZIP,
         LAZPERF,
         ZSTD,
         ZLIB,

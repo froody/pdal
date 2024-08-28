@@ -21,6 +21,7 @@
 
 #include "rust/cxx.h"
 #include <pdal/pdal.hpp>
+#include <pdal/io/BufferReader.hpp>
 #include <utility>
 #include "pdal-sys/src/layout/layout.hpp"
 #include "pdal-sys/src/core/core.hpp"
@@ -43,6 +44,12 @@ namespace pdal_sys {
         std::uint64_t pointField_u64(const PointView&, core::DimTypeId, pdal::PointId);
         float pointField_f32(const PointView&, core::DimTypeId, pdal::PointId);
         double pointField_f64(const PointView&, core::DimTypeId, pdal::PointId);
+    }
+
+    namespace buffer_reader {
+        using BufferReader = pdal::BufferReader;
+        std::unique_ptr<BufferReader> make();
+        void addView(BufferReader &reader, const pdal::PointViewPtr &view);
     }
 
     namespace point_view_set {
