@@ -62,6 +62,11 @@ namespace pdal_sys {
             return *view.layout();
         }
 
+        pdal::PointLayout& layout_mut(PointView& view) {
+            // TODO: is this legit? Does it create a stable reference?
+            return *view.layout();
+        }
+
         size_t pointSizeForDims(const PointView& view, const rust::Vec<core::DimTypeId>& dims) {
             size_t retval = 0;
             for (auto dim : dims) {

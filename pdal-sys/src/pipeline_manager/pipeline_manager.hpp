@@ -33,6 +33,7 @@ public:
     std::size_t execute();
     void executeStreamed();
     const pdal_sys::point_view_set::PointViewSet& views() const;
+    std::shared_ptr<pdal_sys::point_view::PointView> getView() const;
     rust::String metadata() const;
     rust::String schema() const;
     rust::String pipeline() const;

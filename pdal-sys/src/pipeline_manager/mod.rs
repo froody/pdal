@@ -30,9 +30,12 @@ mod ffi {
         type PipelineManager;
         #[namespace = "pdal_sys::point_view_set"]
         type PointViewSet = crate::point_view::PointViewSet;
+        #[namespace = "pdal_sys::point_view"]
+        type PointView = crate::point_view::PointView;
         fn createPipelineManager() -> UniquePtr<PipelineManager>;
         fn readPipeline(self: Pin<&mut PipelineManager>, pipeline: &str) -> Result<()>;
         fn readPipelineFromFile(self: Pin<&mut PipelineManager>, path: &str) -> Result<()>;
+        fn getView(self: &PipelineManager) -> SharedPtr<PointView>;
         fn pipelineStreamable(self: &PipelineManager) -> bool;
         fn execute(self: Pin<&mut PipelineManager>) -> Result<usize>;
         fn executeStreamed(self: Pin<&mut PipelineManager>) -> Result<()>;

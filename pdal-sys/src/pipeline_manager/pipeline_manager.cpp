@@ -49,6 +49,12 @@ namespace pdal_sys {
          m_impl->execute(pdal::ExecMode::PreferStream);
     }
 
+    using pdal_sys::point_view::PointView;
+    std::shared_ptr<PointView> PipelineManager::getView() const {
+        std::shared_ptr<PointView> view(new PointView(m_impl->pointTable()));
+        return view;
+    }
+
     using pdal_sys::point_view_set::PointViewSet;
     const PointViewSet& PipelineManager::views() const {
         return m_impl->views();

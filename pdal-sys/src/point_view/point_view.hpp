@@ -32,6 +32,7 @@ namespace pdal_sys {
         using PointView = pdal::PointView;
         int id(const PointView &view);
         const pdal::PointLayout& layout(const PointView& view);
+        pdal::PointLayout& layout_mut(PointView& view);
         rust::String proj4(const PointView& view);
         rust::String wkt(const PointView& view);
         std::int8_t pointField_i8(const PointView&, core::DimTypeId, pdal::PointId);
@@ -45,6 +46,10 @@ namespace pdal_sys {
         float pointField_f32(const PointView&, core::DimTypeId, pdal::PointId);
         double pointField_f64(const PointView&, core::DimTypeId, pdal::PointId);
     }
+
+    //namespace point_table {
+    //    using PointTable = pdal::PointTable;
+    //}
 
     namespace buffer_reader {
         using BufferReader = pdal::BufferReader;

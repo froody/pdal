@@ -43,6 +43,7 @@ mod ffi {
         #[namespace = "pdal_sys::layout"]
         type PointLayout = crate::layout::PointLayout;
         fn layout(pv: &PointView) -> &PointLayout;
+        //fn layout_mut(pv: Pin<&mut PointView>) -> &mut PointLayout;
         fn proj4(pv: &PointView) -> Result<String>;
         fn wkt(pv: &PointView) -> Result<String>;
         #[namespace = "pdal_sys::core"]
