@@ -42,6 +42,7 @@ mod ffi {
         fn len(self: &PointView) -> u64;
         #[namespace = "pdal_sys::layout"]
         type PointLayout = crate::layout::PointLayout;
+        fn createPointView() -> UniquePtr<PointView>;
         fn layout(pv: &PointView) -> &PointLayout;
         //fn layout_mut(pv: Pin<&mut PointView>) -> &mut PointLayout;
         fn proj4(pv: &PointView) -> Result<String>;
@@ -77,6 +78,7 @@ pub use ffi::{PointView, PointViewSet, PointViewSetIter};
 use crate::core::{pdal_sys_throw, DimTypeEncoding, DimTypeId, PdalType, PdalValue, PointId};
 use cxx::{SharedPtr, UniquePtr};
 use std::fmt::{Debug, Formatter};
+use std::pin::Pin;
 
 pub type PointViewPtr = SharedPtr<PointView>;
 
@@ -126,6 +128,10 @@ impl PointView {
             ))
             .unwrap_err()),
         }
+    }
+
+    pub fn register_dims(self: Pin<&mut Self>, dims: Vec<DimTypeId>) -> Result<(), cxx::Exception> {
+        ffi::register_dims(self, dims)
     }
 
     /// Get point dimension value as a discriminated union.

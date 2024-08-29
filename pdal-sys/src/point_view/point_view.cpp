@@ -43,6 +43,10 @@ namespace pdal_sys {
     }
 
     namespace point_view {
+        std::unique_ptr<PointView> createPointView() {
+            pdal::ColumnPointTable table;
+            return std::make_unique<PointView>(table);
+        }
         int id(const PointView& view) {
             return view.id();
         }

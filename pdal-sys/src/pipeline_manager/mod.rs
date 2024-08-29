@@ -35,7 +35,7 @@ mod ffi {
         fn createPipelineManager() -> UniquePtr<PipelineManager>;
         fn readPipeline(self: Pin<&mut PipelineManager>, pipeline: &str) -> Result<()>;
         fn readPipelineFromFile(self: Pin<&mut PipelineManager>, path: &str) -> Result<()>;
-        fn getView(self: &PipelineManager) -> SharedPtr<PointView>;
+        fn getView(self: &PipelineManager) -> UniquePtr<PointView>;
         fn pipelineStreamable(self: &PipelineManager) -> bool;
         fn execute(self: Pin<&mut PipelineManager>) -> Result<usize>;
         fn executeStreamed(self: Pin<&mut PipelineManager>) -> Result<()>;
