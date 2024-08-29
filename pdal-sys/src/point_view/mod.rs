@@ -122,12 +122,14 @@ mod ffi {
         ) -> Result<()>;
     }
 
+    /*
     #[namespace = "pdal_sys::buffer_reader"]
     unsafe extern "C++" {
         include!("pdal-sys/src/point_view/point_view.hpp");
         type BufferReader;
         fn addView(self: Pin<&mut BufferReader>, pv: &SharedPtr<PointView>);
     }
+    */
 
     // This triggers the generation of the C++ template backing this concrete type.
     // See: https://cxx.rs/extern-c++.html#explicit-shim-trait-impls

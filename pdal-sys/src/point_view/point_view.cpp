@@ -75,6 +75,7 @@ void register_dims(PointView& view, rust::Vec<pdal::Dimension::Id> dims) {
     for (auto dim : dims) {
         view.layout()->registerDim(dim);
     }
+    fprintf(stderr, "Registered %d dimensions\n", dims.size());
     view.table().finalize();
 }
 
@@ -170,6 +171,7 @@ void setPointField_f64(PointView& pv, core::DimTypeId dim, pdal::PointId id,
 }
 }  // namespace point_view
 
+/*
 namespace buffer_reader {
 std::unique_ptr<BufferReader> make() {
     return std::make_unique<BufferReader>();
@@ -178,5 +180,6 @@ void addView(BufferReader& reader, pdal::PointViewPtr view) {
     reader.addView(view);
 }
 }  // namespace buffer_reader
+*/
 }  // namespace pdal_sys
 

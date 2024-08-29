@@ -21,6 +21,8 @@
 
 #include <sstream>
 
+#include <pdal/io/BufferReader.hpp>
+
 namespace pdal_sys {
     std::unique_ptr<PipelineManager> createPipelineManager() {
         return std::unique_ptr<PipelineManager>(new PipelineManager());
@@ -51,15 +53,20 @@ namespace pdal_sys {
 
     void PipelineManager::setupInputView(std::unique_ptr<pdal_sys::point_view::PointView> view) {
         std::shared_ptr<pdal::PointView> view_impl = std::move(view);
+        m_impl->validateStageOptions();
         auto stage = m_impl->getStage();
-        pdal::BufferReader readerStage;
-        readerStage.addView(view_impl);
-        stage->setInput(readerStage);
+        //pdal::BufferReader readerStage();
+
+         pdal::BufferReader*  readerStage =  new pdal::BufferReader();
+
+         readerStage->addView(view_impl);
+        stage->setInput(*readerStage);
     }
 
     using pdal_sys::point_view::PointView;
     std::unique_ptr<PointView> PipelineManager::getView() const {
         std::unique_ptr<PointView> view(new PointView(m_impl->pointTable()));
+        fprintf(stderr, "PipelineManager::getView %lu, %lu\n", 11, view->size());
         return view;
     }
 
