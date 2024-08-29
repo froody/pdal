@@ -47,6 +47,17 @@ namespace pdal_sys {
         std::uint64_t pointField_u64(const PointView&, core::DimTypeId, pdal::PointId);
         float pointField_f32(const PointView&, core::DimTypeId, pdal::PointId);
         double pointField_f64(const PointView&, core::DimTypeId, pdal::PointId);
+
+        void setPointField_i8(PointView&, core::DimTypeId, pdal::PointId, std::int8_t);
+        void setPointField_u8(PointView&, core::DimTypeId, pdal::PointId, std::uint8_t);
+        void setPointField_i16(PointView&, core::DimTypeId, pdal::PointId, std::int16_t);
+        void setPointField_u16(PointView&, core::DimTypeId, pdal::PointId, std::uint16_t);
+        void setPointField_i32(PointView&, core::DimTypeId, pdal::PointId, std::int32_t);
+        void setPointField_u32(PointView&, core::DimTypeId, pdal::PointId, std::uint32_t);
+        void setPointField_i64(PointView&, core::DimTypeId, pdal::PointId, std::int64_t);
+        void setPointField_u64(PointView&, core::DimTypeId, pdal::PointId, std::uint64_t);
+        void setPointField_f32(PointView&, core::DimTypeId, pdal::PointId, float);
+        void setPointField_f64(PointView&, core::DimTypeId, pdal::PointId, double);
     }
 
     //namespace point_table {

@@ -21,7 +21,6 @@
 #[cxx::bridge(namespace = "pdal_sys")]
 mod ffi {
 
-
     #[namespace = "pdal_sys::point_view_set"]
     unsafe extern "C++" {
         include!("pdal-sys/src/point_view/point_view.hpp");
@@ -60,13 +59,74 @@ mod ffi {
         fn pointField_u64(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<u64>;
         fn pointField_f32(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<f32>;
         fn pointField_f64(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<f64>;
+
+        fn setPointField_i8(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: i8,
+        ) -> Result<()>;
+        fn setPointField_u8(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: u8,
+        ) -> Result<()>;
+        fn setPointField_i16(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: i16,
+        ) -> Result<()>;
+        fn setPointField_u16(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: u16,
+        ) -> Result<()>;
+        fn setPointField_i32(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: i32,
+        ) -> Result<()>;
+        fn setPointField_u32(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: u32,
+        ) -> Result<()>;
+        fn setPointField_i64(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: i64,
+        ) -> Result<()>;
+        fn setPointField_u64(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: u64,
+        ) -> Result<()>;
+        fn setPointField_f32(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: f32,
+        ) -> Result<()>;
+        fn setPointField_f64(
+            pv: Pin<&mut PointView>,
+            dim: DimTypeId,
+            idx: u64,
+            val: f64,
+        ) -> Result<()>;
     }
 
     #[namespace = "pdal_sys::buffer_reader"]
     unsafe extern "C++" {
         include!("pdal-sys/src/point_view/point_view.hpp");
         type BufferReader;
-        fn addView(self :Pin<&mut BufferReader>, pv: &SharedPtr<PointView>);
+        fn addView(self: Pin<&mut BufferReader>, pv: &SharedPtr<PointView>);
     }
 
     // This triggers the generation of the C++ template backing this concrete type.
@@ -127,6 +187,48 @@ impl PointView {
                 T::encoding()
             ))
             .unwrap_err()),
+        }
+    }
+
+    pub fn set_point_value<T: PdalType>(
+        self: Pin<&mut Self>,
+        dim: DimTypeId,
+        idx: PointId,
+        value: T,
+    ) -> Result<(), cxx::Exception> {
+        match T::encoding() {
+            DimTypeEncoding::Unsigned8 => ffi::setPointField_u8(
+                self,
+                dim,
+                idx,
+                u8::static_cast(value).ok_or_else(|| {
+                    pdal_sys_throw(&format!(
+                        "Failed to convert value to type {:?}",
+                        T::encoding()
+                    ))
+                    .unwrap_err()
+                })?,
+                /*j
+                ok_or(pdal_sys_throw(&format!(
+                    "Failed to convert value to type {:?}",
+                    T::encoding()
+                )))?,
+                */
+            ),
+            DimTypeEncoding::Signed8 => ffi::setPointField_i8(self, dim, idx, i8::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            DimTypeEncoding::Unsigned16 => ffi::setPointField_u16(self, dim, idx, u16::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            DimTypeEncoding::Signed16 => ffi::setPointField_i16(self, dim, idx, i16::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            DimTypeEncoding::Unsigned32 => ffi::setPointField_u32(self, dim, idx, u32::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            DimTypeEncoding::Signed32 => ffi::setPointField_i32(self, dim, idx, i32::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            DimTypeEncoding::Unsigned64 => ffi::setPointField_u64(self, dim, idx, u64::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            DimTypeEncoding::Signed64 => ffi::setPointField_i64(self, dim, idx, i64::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            DimTypeEncoding::Float => ffi::setPointField_f32(self, dim, idx, f32::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            DimTypeEncoding::Double => ffi::setPointField_f64(self, dim, idx, f64::static_cast(value).ok_or_else(|| { pdal_sys_throw(&format!("Failed to convert value to type {:?}", T::encoding())).unwrap_err()})?),
+            _ => Err::<&str, std::result::Result<(), cxx::Exception>>(pdal_sys_throw(&format!(
+                "Failed to convert value to type {:?}",
+                T::encoding()
+            )))
+            .unwrap_err(),
         }
     }
 
