@@ -34,7 +34,7 @@ public:
     void executeStreamed();
     const pdal_sys::point_view_set::PointViewSet& views() const;
     std::unique_ptr<pdal_sys::point_view::PointView> getView() const;
-    void setupInputView(std::shared_ptr<pdal_sys::point_view::PointView> view);
+    void setupInputView(std::unique_ptr<pdal_sys::point_view::PointView> view);
     rust::String metadata() const;
     rust::String schema() const;
     rust::String pipeline() const;

@@ -49,10 +49,11 @@ namespace pdal_sys {
          m_impl->execute(pdal::ExecMode::PreferStream);
     }
 
-    void PipelineManager::setupInputView(std::shared_ptr<pdal_sys::point_view::PointView> view) {
+    void PipelineManager::setupInputView(std::unique_ptr<pdal_sys::point_view::PointView> view) {
+        std::shared_ptr<pdal::PointView> view_impl = std::move(view);
         auto stage = m_impl->getStage();
         pdal::BufferReader readerStage;
-        readerStage.addView(view);
+        readerStage.addView(view_impl);
         stage->setInput(readerStage);
     }
 
