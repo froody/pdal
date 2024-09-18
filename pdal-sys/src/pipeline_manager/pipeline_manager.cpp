@@ -51,16 +51,22 @@ namespace pdal_sys {
          m_impl->execute(pdal::ExecMode::PreferStream);
     }
 
-    void PipelineManager::setupInputView(std::unique_ptr<pdal_sys::point_view::PointView> view) {
+    void PipelineManager::setupInputView(
+        std::unique_ptr<pdal_sys::point_view::PointView> view) {
         std::shared_ptr<pdal::PointView> view_impl = std::move(view);
         m_impl->validateStageOptions();
-        auto stage = m_impl->getStage();
-        //pdal::BufferReader readerStage();
+        // pdal::BufferReader readerStage();
 
-         pdal::BufferReader*  readerStage =  new pdal::BufferReader();
+        // Intentionally leak so it doesn't get deleted
+        pdal::BufferReader* readerStage = new pdal::BufferReader();
 
-         readerStage->addView(view_impl);
-        stage->setInput(*readerStage);
+        readerStage->addView(view_impl);
+        for (auto stage : m_impl->roots()) {
+            // Only set the input view on non-reader root stages
+            if (dynamic_cast<pdal::Reader*>(stage) == nullptr) {
+                stage->setInput(*readerStage);
+            }
+        }
     }
 
     using pdal_sys::point_view::PointView;
