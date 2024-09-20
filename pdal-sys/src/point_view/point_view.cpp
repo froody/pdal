@@ -88,6 +88,15 @@ size_t pointSizeForDims(const PointView& view,
     return retval;
 }
 
+std::unique_ptr<std::vector<std::uint64_t>> get_index(const PointView&pv) {
+    // TODO(tom) find a way to do without copying
+    auto &index = pv.getIndex();
+    auto result = std::make_unique<std::vector<std::uint64_t>>();
+    result->reserve(index.size());
+    result->insert(result->end(), index.cbegin(), index.cend());
+    return result;
+}
+
 std::int8_t pointField_i8(const PointView& pv, core::DimTypeId dim,
                           pdal::PointId id) {
     return pv.getFieldAs<std::int8_t>(dim, id);

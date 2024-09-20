@@ -37,6 +37,7 @@ namespace pdal_sys {
         std::unique_ptr<PointView> createPointView();
         rust::String proj4(const PointView& view);
         rust::String wkt(const PointView& view);
+        std::unique_ptr<std::vector<std::uint64_t>> get_index(const PointView&);
         std::int8_t pointField_i8(const PointView&, core::DimTypeId, pdal::PointId);
         std::uint8_t pointField_u8(const PointView&, core::DimTypeId, pdal::PointId);
         std::int16_t pointField_i16(const PointView&, core::DimTypeId, pdal::PointId);

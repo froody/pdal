@@ -48,6 +48,7 @@ mod ffi {
         fn wkt(pv: &PointView) -> Result<String>;
         #[namespace = "pdal_sys::core"]
         type DimTypeId = crate::core::DimTypeId;
+        fn get_index(pv: &PointView) -> UniquePtr<CxxVector<u64>>;
         fn register_dims(pv: Pin<&mut PointView>, dims: Vec<DimTypeId>) -> Result<()>;
         fn pointField_i8(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<i8>;
         fn pointField_u8(pv: &PointView, dim: DimTypeId, idx: u64) -> Result<u8>;
@@ -236,6 +237,10 @@ impl PointView {
 
     pub fn register_dims(self: Pin<&mut Self>, dims: Vec<DimTypeId>) -> Result<(), cxx::Exception> {
         ffi::register_dims(self, dims)
+    }
+
+    pub fn get_index(&self) -> Vec<u64> {
+        ffi::get_index(self).iter().cloned().collect()
     }
 
     /// Get point dimension value as a discriminated union.
